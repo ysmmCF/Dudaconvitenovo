@@ -13,63 +13,80 @@
     html, body {
       height: 100%;
       font-family: 'Amatic SC', cursive;
+      background: black;
     }
 
     body {
       display: flex;
       justify-content: center;
       align-items: center;
-      padding: 25px;
 
+      background-color: #000;
       background-image: url("https://ysmmCF.github.io/Dudaconvitenovo/Fundo%20confirmacao%20de%20presen%C3%A7a%20.png");
-      background-size: conver;
+      background-size: contain;
       background-position: center;
       background-repeat: no-repeat;
     }
 
     .container {
-      width: 95%;
-      max-width: 500px;
+      width: 100%;
+      max-width: 420px;
+      height: 100vh;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
       text-align: center;
-      padding: 20px;
+      padding: 15px;
+    }
+
+    form {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
     /* INPUT DO NOME */
     .nome-box {
-      margin-top: 20px;
-      margin-bottom: 25px;
+      width: 100%;
+      margin-top: 200px;
+      margin-bottom: 50px;
     }
 
     .nome-box input {
       width: 100%;
-      padding: 14px 16px;
-      font-size: 1.9em;
-      border-radius: 18px;
+      padding: 8px 10px;
+      font-size: 1.4em;
+      border-radius: 14px;
       border: 2px solid rgba(255, 212, 0, 0.9);
       outline: none;
-      background: rgba(255, 255, 255, 0.12);
+      background: rgba(255, 255, 255, 0.10);
       backdrop-filter: blur(6px);
       color: #fff;
       text-align: center;
-      box-shadow: 0 0 18px rgba(255, 212, 0, 0.25);
+      box-shadow: 0 0 12px rgba(255, 212, 0, 0.22);
     }
 
     .nome-box input::placeholder {
       color: rgba(255, 255, 255, 0.7);
     }
 
-
     /* BOTÕES SIM/NÃO */
     .radios {
-      margin-top: 100px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 15px;
     }
 
     .radios label {
-      display: block;
-      font-size: 2em;
-      padding: 16px;
-      border-radius: 22px;
-      margin: 14px 0;
+      width: 100%;
+      font-size: 1.55em;
+      padding: 12px;
+      border-radius: 18px;
       cursor: pointer;
 
       background: rgba(255, 255, 255, 0.10);
@@ -77,13 +94,13 @@
       color: #fff;
 
       backdrop-filter: blur(6px);
-      box-shadow: 0 0 16px rgba(0,0,0,0.25);
+      box-shadow: 0 0 12px rgba(0,0,0,0.25);
       transition: 0.25s;
     }
 
     .radios label:hover {
       transform: scale(1.02);
-      box-shadow: 0 0 22px rgba(255, 212, 0, 0.25);
+      box-shadow: 0 0 18px rgba(255, 212, 0, 0.25);
     }
 
     .radios input {
@@ -99,27 +116,27 @@
     .radios input:checked + span {
       background: rgba(255, 212, 0, 0.85);
       color: #4b006f;
-      border-radius: 18px;
-      padding: 14px;
-      box-shadow: 0 0 18px rgba(255, 212, 0, 0.5);
+      border-radius: 16px;
+      padding: 10px;
+      box-shadow: 0 0 14px rgba(255, 212, 0, 0.5);
       text-shadow: none;
     }
 
     /* BOTÃO ENVIAR */
     button {
-      margin-top: 25px;
-      padding: 14px 0;
+      margin-top: 14px;
+      padding: 11px 0;
       width: 100%;
-      font-size: 2.2em;
+      font-size: 1.9em;
       border: none;
-      border-radius: 30px;
+      border-radius: 26px;
       cursor: pointer;
 
       background: linear-gradient(to bottom, #ffe27a, #ffd400);
       color: #4b006f;
       font-weight: bold;
 
-      box-shadow: 0 8px 18px rgba(0,0,0,0.35);
+      box-shadow: 0 6px 14px rgba(0,0,0,0.35);
       transition: 0.2s;
     }
 
@@ -132,8 +149,8 @@
     }
 
     #msg {
-      margin-top: 20px;
-      font-size: 2em;
+      margin-top: 10px;
+      font-size: 1.6em;
       color: #ffd400;
       text-shadow: 2px 2px 0px rgba(0,0,0,0.65);
     }
@@ -155,7 +172,6 @@
       0% { opacity: 1; transform: translate(0,0) scale(1); }
       100% { opacity: 0; transform: translate(var(--x), var(--y)) scale(0.3); }
     }
-
   </style>
 </head>
 
@@ -164,15 +180,10 @@
   <div class="container">
     <form id="form">
 
-      <!-- PARTE DO NOME (ANTES DO DIVISOR) -->
       <div class="nome-box">
         <input type="text" name="nome" placeholder="Digite seu nome" required>
       </div>
 
-      <!-- DIVISOR -->
-      <div class="divider"></div>
-
-      <!-- BOTÕES ABAIXO -->
       <div class="radios">
         <label>
           <input type="radio" name="presenca" value="Sim, estarei lá!" required>
@@ -200,7 +211,6 @@
     form.addEventListener('submit', e => {
       e.preventDefault();
 
-      // Animação de brilhos
       for(let i=0;i<10;i++){
         const spark = document.createElement('div');
         spark.className = 'spark';
@@ -214,7 +224,6 @@
         setTimeout(()=>spark.remove(),800);
       }
 
-      // Enviar dados como FormData
       const formData = new FormData(form);
       fetch(webAppUrl, { method:'POST', body: formData })
         .then(res => res.text())
