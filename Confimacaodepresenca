@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Confirmação de Presença</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+
+    html, body {
+      height: 100%;
+      font-family: 'Amatic SC', cursive;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 25px;
+
+      background-image: url("https://ysmmCF.github.io/Dudaconvitenovo/Fundo%20confirmacao%20de%20presen%C3%A7a%20.png");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    .container {
+      width: 95%;
+      max-width: 500px;
+      text-align: center;
+      padding: 20px;
+    }
+
+    /* INPUT DO NOME */
+    .nome-box {
+      margin-top: 290px;
+      margin-bottom: 25px;
+    }
+
+    .nome-box input {
+      width: 100%;
+      padding: 14px 16px;
+      font-size: 1.9em;
+      border-radius: 18px;
+      border: 2px solid rgba(255, 212, 0, 0.9);
+      outline: none;
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(6px);
+      color: #fff;
+      text-align: center;
+      box-shadow: 0 0 18px rgba(255, 212, 0, 0.25);
+    }
+
+    .nome-box input::placeholder {
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+
+    /* BOTÕES SIM/NÃO */
+    .radios {
+      margin-top: 100px;
+    }
+
+    .radios label {
+      display: block;
+      font-size: 2em;
+      padding: 16px;
+      border-radius: 22px;
+      margin: 14px 0;
+      cursor: pointer;
+
+      background: rgba(255, 255, 255, 0.10);
+      border: 2px solid rgba(255, 212, 0, 0.85);
+      color: #fff;
+
+      backdrop-filter: blur(6px);
+      box-shadow: 0 0 16px rgba(0,0,0,0.25);
+      transition: 0.25s;
+    }
+
+    .radios label:hover {
+      transform: scale(1.02);
+      box-shadow: 0 0 22px rgba(255, 212, 0, 0.25);
+    }
+
+    .radios input {
+      display: none;
+    }
+
+    .radios span {
+      display: block;
+      text-shadow: 2px 2px 0px rgba(0,0,0,0.55);
+    }
+
+    /* QUANDO SELECIONAR */
+    .radios input:checked + span {
+      background: rgba(255, 212, 0, 0.85);
+      color: #4b006f;
+      border-radius: 18px;
+      padding: 14px;
+      box-shadow: 0 0 18px rgba(255, 212, 0, 0.5);
+      text-shadow: none;
+    }
+
+    /* BOTÃO ENVIAR */
+    button {
+      margin-top: 25px;
+      padding: 14px 0;
+      width: 100%;
+      font-size: 2.2em;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+
+      background: linear-gradient(to bottom, #ffe27a, #ffd400);
+      color: #4b006f;
+      font-weight: bold;
+
+      box-shadow: 0 8px 18px rgba(0,0,0,0.35);
+      transition: 0.2s;
+    }
+
+    button:hover {
+      transform: scale(1.02);
+    }
+
+    button:active {
+      transform: scale(0.97);
+    }
+
+    #msg {
+      margin-top: 20px;
+      font-size: 2em;
+      color: #ffd400;
+      text-shadow: 2px 2px 0px rgba(0,0,0,0.65);
+    }
+
+    /* BRILHINHOS */
+    .spark {
+      position: absolute;
+      width: 7px;
+      height: 7px;
+      background: #ffd400;
+      border-radius: 50%;
+      animation: sparkle 0.8s forwards;
+      pointer-events: none;
+      opacity: 0.95;
+      box-shadow: 0 0 12px rgba(255, 212, 0, 0.9);
+    }
+
+    @keyframes sparkle {
+      0% { opacity: 1; transform: translate(0,0) scale(1); }
+      100% { opacity: 0; transform: translate(var(--x), var(--y)) scale(0.3); }
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+    <form id="form">
+
+      <!-- PARTE DO NOME (ANTES DO DIVISOR) -->
+      <div class="nome-box">
+        <input type="text" name="nome" placeholder="Digite seu nome" required>
+      </div>
+
+      <!-- DIVISOR -->
+      <div class="divider"></div>
+
+      <!-- BOTÕES ABAIXO -->
+      <div class="radios">
+        <label>
+          <input type="radio" name="presenca" value="Sim, estarei lá!" required>
+          <span>Sim, estarei lá!</span>
+        </label>
+
+        <label>
+          <input type="radio" name="presenca" value="Não poderei participar" required>
+          <span>Não poderei participar.</span>
+        </label>
+      </div>
+
+      <button type="submit">Enviar</button>
+    </form>
+
+    <p id="msg"></p>
+  </div>
+
+
+  <script>
+    const form = document.getElementById('form');
+    const msg = document.getElementById('msg');
+    const webAppUrl = "https://script.google.com/macros/s/AKfycbx3DvKzsaCp6SsYynqIjaZzqpI4reIo40fc_soDczlO0VAC3Q1rtDYlHiwtVXYMGxTN/exec";  
+
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+
+      // Animação de brilhos
+      for(let i=0;i<10;i++){
+        const spark = document.createElement('div');
+        spark.className = 'spark';
+        const x = (Math.random()-0.5)*120 + 'px';
+        const y = (Math.random()-0.5)*120 + 'px';
+        spark.style.setProperty('--x', x);
+        spark.style.setProperty('--y', y);
+        spark.style.left = '50%';
+        spark.style.top = '50%';
+        form.appendChild(spark);
+        setTimeout(()=>spark.remove(),800);
+      }
+
+      // Enviar dados como FormData
+      const formData = new FormData(form);
+      fetch(webAppUrl, { method:'POST', body: formData })
+        .then(res => res.text())
+        .then(() => {
+          msg.innerText = "Sua resposta foi enviada com sucesso!";
+          form.reset();
+        })
+        .catch(() => {
+          msg.innerText = "Ocorreu um erro ao enviar. Tente novamente.";
+          msg.style.color = "red";
+        });
+    });
+  </script>
+
+</body>
+</html>
