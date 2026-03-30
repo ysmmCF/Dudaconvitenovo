@@ -210,6 +210,10 @@
 
     form.addEventListener('submit', e => {
       e.preventDefault();
+      e.preventDefault();
+
+msg.innerText = "Enviando...";
+msg.style.color = "#ffd400";
 
       for(let i=0;i<10;i++){
         const spark = document.createElement('div');
