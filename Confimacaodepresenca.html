@@ -21,6 +21,9 @@
       align-items: center;
       padding: 25px;
 
+      /* FUNDO PRETO ATRÁS */
+      background-color: #000;
+
       background-image: url("https://ysmmCF.github.io/Dudaconvitenovo/Fundo%20confirmacao%20de%20presen%C3%A7a%20.png");
       background-size: contain;
       background-position: center;
@@ -30,14 +33,32 @@
     .container {
       width: 95%;
       max-width: 500px;
+      height: 100vh;
+      max-height: 900px;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
       text-align: center;
       padding: 20px;
     }
 
+    form {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      /* trava tudo pra não escapar */
+      max-height: 100%;
+    }
+
     /* INPUT DO NOME */
     .nome-box {
+      width: 100%;
       margin-top: 30px;
-      margin-bottom: 227px;
+      margin-bottom: 190px;
     }
 
     .nome-box input {
@@ -58,18 +79,21 @@
       color: rgba(255, 255, 255, 0.7);
     }
 
-
     /* BOTÕES SIM/NÃO */
     .radios {
-      margin-top: 90px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      margin-top: 70px;
     }
 
     .radios label {
+      width: 100%;
       display: block;
       font-size: 2em;
-      padding: 76px;
+      padding: 18px;
       border-radius: 22px;
-      margin: 14px 0;
       cursor: pointer;
 
       background: rgba(255, 255, 255, 0.10);
@@ -107,7 +131,7 @@
 
     /* BOTÃO ENVIAR */
     button {
-      margin-top: 10px;
+      margin-top: 22px;
       padding: 14px 0;
       width: 100%;
       font-size: 2.2em;
@@ -132,7 +156,7 @@
     }
 
     #msg {
-      margin-top: 20px;
+      margin-top: 18px;
       font-size: 2em;
       color: #ffd400;
       text-shadow: 2px 2px 0px rgba(0,0,0,0.65);
@@ -164,12 +188,10 @@
   <div class="container">
     <form id="form">
 
-      <!-- PARTE DO NOME (ANTES DO DIVISOR) -->
       <div class="nome-box">
         <input type="text" name="nome" placeholder="Digite seu nome" required>
       </div>
 
-      <!-- BOTÕES ABAIXO -->
       <div class="radios">
         <label>
           <input type="radio" name="presenca" value="Sim, estarei lá!" required>
@@ -197,7 +219,6 @@
     form.addEventListener('submit', e => {
       e.preventDefault();
 
-      // Animação de brilhos
       for(let i=0;i<10;i++){
         const spark = document.createElement('div');
         spark.className = 'spark';
@@ -211,7 +232,6 @@
         setTimeout(()=>spark.remove(),800);
       }
 
-      // Enviar dados como FormData
       const formData = new FormData(form);
       fetch(webAppUrl, { method:'POST', body: formData })
         .then(res => res.text())
