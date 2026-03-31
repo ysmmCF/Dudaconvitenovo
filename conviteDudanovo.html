@@ -31,11 +31,14 @@ body {
   justify-content: center;
 }
 
+/* Container segue o tamanho real da imagem */
 #conteudo {
   width: 100%;
   position: relative;
+  overflow: hidden; /* ISSO impede qualquer coisa de vazar da imagem */
 }
 
+/* IMAGEM INTEIRA SEM CORTAR */
 #conteudo img {
   width: 100%;
   height: auto;
@@ -80,6 +83,7 @@ body {
   justify-content: center;
   flex-shrink: 0;
   box-shadow: 0px 0px 10px rgba(255, 216, 107, 0.4);
+  transition: 0.3s;
 }
 
 /* Ícone amarelo */
@@ -103,7 +107,6 @@ body {
 /* Hover */
 .botao:hover .icone {
   transform: scale(1.08);
-  transition: 0.3s;
   background: #5e2a94;
 }
 
@@ -172,15 +175,16 @@ body {
   font-size: 34px;
   color: #ffd86b;
 }
-  /* ===== CONTAGEM REGRESSIVA ===== */
+
+/* ===== CONTAGEM REGRESSIVA ===== */
 #countdown-box {
   position: absolute;
-  top: 170%;
   left: 50%;
   transform: translateX(-50%);
   z-index: 25;
   text-align: center;
-  padding: 50px 12px;
+
+  padding: 26px 16px;
   border-radius: 18px;
 
   background: rgba(75, 30, 120, 0.75);
@@ -189,48 +193,43 @@ body {
 
   font-family: 'Cormorant Garamond', serif;
   color: #ffd86b;
-  width: 70%;
-  max-width: 260px;
+
+  width: min(80%, 340px);
+
+  bottom: 0; /* base */
 }
 
 #countdown-title {
-  font-size: 20px;
+  font-size: clamp(19px, 3vw, 29px);
   font-weight: 700;
   margin-bottom: 10px;
   letter-spacing: 1px;
 }
 
 #countdown-time {
-  display: flex;
-  justify-content: space-between;
-  gap: 10px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(6px, 2vw, 12px);
 }
 
 .time-box {
-  flex: 1;
   background: rgba(0, 0, 0, 0.25);
   border: 1px solid rgba(255, 216, 107, 0.5);
   border-radius: 14px;
-  padding: 18px 6px;
+  padding: clamp(6px, 2vw, 14px) 6px;
 }
 
 .time-number {
-  font-size: 35px;
+  font-size: clamp(30px, 5vw, 45px);
   font-weight: 700;
   line-height: 1;
 }
 
 .time-label {
-  font-size: 14px;
+  font-size: clamp(19px, 2.5vw, 20px);
   font-weight: 600;
   margin-top: 6px;
   opacity: 0.95;
-  
-}
-  #countdown-time {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
 }
 </style>
 </head>
@@ -272,7 +271,7 @@ body {
         </div>
         Sugestão de presentes
       </a>
-      
+
       <a href="https://ysmmCF.github.io/Dudaconvitenovo/Manualdoconvidado.png" class="botao" id="btnManual">
         <div class="icone">
           <span class="material-icons">menu_book</span>
@@ -292,19 +291,7 @@ body {
   </div>
 </div>
 
-<!-- POP-UP -->
-<div id="popup">
-  <div id="popup-content">
-    <div id="popup-close">&times;</div>
-    <p>O convite é interativo<br>Fique à vontade para clicar nos botões! <br><br> Confirme presença até o dia 25/11</p>
-  </div>
-</div>
-
-<!-- Música -->
-<audio id="music" loop>
-  <source src="https://ysmmCF.github.io/ConviteFesta/I See The Light (From _Tangled_) [YTKv0PNGDao].mp3" type="audio/mpeg">
-</audio>
-<!-- CONTAGEM REGRESSIVA -->
+  <!-- CONTAGEM REGRESSIVA -->
 <div id="countdown-box">
   <div id="countdown-title">Faltam...</div>
 
@@ -330,6 +317,19 @@ body {
     </div>
   </div>
 </div>
+<!-- POP-UP -->
+<div id="popup">
+  <div id="popup-content">
+    <div id="popup-close">&times;</div>
+    <p>O convite é interativo<br>Fique à vontade para clicar nos botões! <br><br> Confirme presença até o dia 25/11</p>
+  </div>
+</div>
+
+<!-- Música -->
+<audio id="music" loop>
+  <source src="https://ysmmCF.github.io/ConviteFesta/I See The Light (From _Tangled_) [YTKv0PNGDao].mp3" type="audio/mpeg">
+</audio>
+
 <script>
 const music = document.getElementById("music");
 const musicBtn = document.getElementById("music-btn");
@@ -359,7 +359,8 @@ setTimeout(() => {
 close.addEventListener("click", () => {
   popup.classList.remove("active");
 });
-  /* ===== CONTAGEM REGRESSIVA ===== */
+
+/* ===== CONTAGEM REGRESSIVA ===== */
 function atualizarContagem() {
   const destino = new Date("December 10, 2026 00:00:00").getTime();
   const agora = new Date().getTime();
@@ -387,6 +388,39 @@ function atualizarContagem() {
 
 setInterval(atualizarContagem, 1000);
 atualizarContagem();
+  
+function travarCountdownNoFim() {
+  const conteudo = document.getElementById("conteudo");
+  const countdown = document.getElementById("countdown-box");
+
+  if (!conteudo || !countdown) return;
+
+  // quanto você quer empurrar pra baixo (se botar 200, ele tenta)
+  const tentativaDescer = 200;
+
+  // altura do conteudo (imagem)
+  const alturaConteudo = conteudo.offsetHeight;
+
+  // altura da caixa countdown
+  const alturaCountdown = countdown.offsetHeight;
+
+  // posição máxima permitida (muro)
+  const maxTop = alturaConteudo - alturaCountdown;
+
+  // posição que você quer (ele tenta ir pra baixo)
+  let topDesejado = maxTop + tentativaDescer;
+
+  // trava no limite
+  if (topDesejado > maxTop) topDesejado = maxTop;
+
+  countdown.style.top = topDesejado + "px";
+  countdown.style.bottom = "auto";
+}
+
+window.addEventListener("load", travarCountdownNoFim);
+window.addEventListener("resize", travarCountdownNoFim);
+</script>
+ 
 </script>
 
 </body>
